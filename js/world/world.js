@@ -125,7 +125,8 @@ export default class World{
             if(!this.#rooms[index])
             {
                 this.#rooms[index] = new Room(scene, sources[Math.round(Math.random()*(sources.length-1))], xp, yp, {
-                    canSetPlayerPosition: false
+                    canSetPlayerPosition: false,
+                    enemyRate: Math.random()*0.2
                 });
             }
 

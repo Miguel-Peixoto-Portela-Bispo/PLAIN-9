@@ -1,3 +1,4 @@
+import Enemy from "../game-objects/enemy.js";
 import Player from "../game-objects/player.js";
 import Color from "../graphics/color.js";
 import Renderer from "../graphics/renderer.js";
@@ -29,6 +30,7 @@ export default class Room{
      * @param {number} offsetY 
      * @param {Object} opts 
      * @param {boolean} opts.canSetPlayerPosition
+     * @param {number} opts.enemyRate
      */
     constructor(scene, src, offsetX = 0, offsetY = 0, opts = {})
     {
@@ -177,6 +179,18 @@ export default class Room{
                             o.position.y = y*Tile.HEIGHT+this.offsetY;
                         }
                     }
+                }
+                if(Math.random()<opts.enemyRate&&!this.getTile(Math.floor(x+this.offsetX/Tile.WIDTH), Math.floor(y+this.offsetY/Tile.HEIGHT)).isSolid)
+                {
+                    let players = [];
+                    for(const o of this.#scene.objects)
+                    {
+                        if(o instanceof Player)
+                        {
+                            players.push(o);
+                        }
+                    }
+                    this.#scene.addObject(new Enemy(this.#scene, x*Tile.WIDTH+this.offsetX, y*Tile.HEIGHT+this.offsetY, players))
                 }
             }
         }

@@ -4,6 +4,7 @@ import Player from "../../game-objects/player.js";
 import InputHandler from "../../inputs/input-handler.js";
 import Renderer from "../../graphics/renderer.js";
 import World from "../../world/world.js";
+import Enemy from "../../game-objects/enemy.js";
 
 export default class MainScene extends Scene{
 
@@ -19,7 +20,7 @@ export default class MainScene extends Scene{
         this.addObject(this.player);
         World.getSources("../../../assets/rooms.txt").then(v=>
         {
-            this.world = new World(this, 3, 3, v);
+            this.world = new World(this, 5, 5, v);
         })
     }
     /**
@@ -36,7 +37,7 @@ export default class MainScene extends Scene{
             }
             else
             {
-                o.update([]);
+                o.update(this.world?this.world.rooms:null);
             }
         }
     }
