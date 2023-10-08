@@ -4,6 +4,7 @@ import Room from "../world/room.js";
 import Mob from "./mob.js";
 import Player from "./player.js";
 import StringMask from "../util/string-mask.js";
+import Vector from "../util/vector.js";
 
 export default class Enemy extends Mob{
 
@@ -28,11 +29,22 @@ export default class Enemy extends Mob{
     update(rooms)
     {
         const player = this.players[0];
-        let vel = player.position.add(StringMask.getStringCenter(player.text)).sub(this.position);
+        let vel = player.position.add(StringMask.getStringCenter(player.text)).sub(this.position.add(StringMask.getStringCenter(this.text)));
         if(vel.length()<=8)
         {
             vel = vel.mult(vel.length()>1?1/vel.length():1).mult(this.speed);
             this.move(vel, rooms);
         }
+        if(this.mask.intersectsString(player.mask))
+        {
+            this.giveDamage(player);
+            this.receiveDamage(player);
+        }
+        super.update();
+    }
+    die()
+    {
+        this.players[0].experience+=this.level;
+        this._scene.removeObject(this);
     }
 }

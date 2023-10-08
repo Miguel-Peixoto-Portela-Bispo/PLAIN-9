@@ -27,10 +27,8 @@ export default class MobileGameObject extends GameObject{
         else
         {
             const lastPos = this.position;
-            const lastMaskPos = this.mask.position;
 
             this.position = this.position.add(vel);
-            this.mask.position = this.mask.position.add(vel);
 
             if(rooms)
             {
@@ -40,7 +38,6 @@ export default class MobileGameObject extends GameObject{
                     if(tiles[i].isSolid)
                     {
                         this.position = lastPos;
-                        this.mask.position = lastMaskPos;
                         break;
                     }
                 }

@@ -1,4 +1,5 @@
 import Color from "../graphics/color.js";
+import Renderer from "../graphics/renderer.js";
 import InputHandler from "../inputs/input-handler.js";
 import Vector from "../util/vector.js";
 import Room from "../world/room.js";
@@ -20,6 +21,9 @@ export default class Mob extends MobileGameObject{
         this.attackPerLevel = 1;
         this.maxHealthPointsPerLevel = 1;
         this.defensePerLevel = 1;
+        this.canReceiveDamage = true;
+        this.damageTimer = 0;
+        this.canShow = true;
     }
     /**
      * 
@@ -29,6 +33,32 @@ export default class Mob extends MobileGameObject{
     {
         super.update();
         this.checkStatus();
+        if(!this.canReceiveDamage)
+        {
+            this.damageTimer++;
+            if(this.damageTimer%5===0)
+            {
+                this.canShow = !this.canShow;
+            }
+            if(this.damageTimer>30)
+            {
+                this.damageTimer = 0;
+                this.canShow = true;
+                this.canReceiveDamage = true;
+            }
+        }
+        
+    }
+    /**
+     * 
+     * @param {Renderer} renderer 
+     */
+    render(renderer)
+    {
+        if(this.canShow)
+        {
+            super.render(renderer);
+        }
     }
     /**
      * 
@@ -38,15 +68,21 @@ export default class Mob extends MobileGameObject{
     {
         if(this.experience>=this.maxExperience)
         {
+            this.level++;
             this.experience-=this.maxExperience;
             this.maxExperience+=this.maxExperiencePerLevel;
             this.attack+=this.attackPerLevel;
             this.healthPoints+=this.healthPointsPerLevel;
             this.defense+=this.defensePerLevel;
         }
-        if(this.healthPoints>this.maxHealthPointsPerLevel)
+        if(this.healthPoints>this.maxHealthPoints)
         {
-            this.healthPoints = this.maxHealthPointsPerLevel;
+            this.healthPoints = this.maxHealthPoints;
+        }
+        if(this.healthPoints<0)
+        {
+            this.healthPoints = 0;
+            this.die();
         }
     }
     /**
@@ -55,12 +91,13 @@ export default class Mob extends MobileGameObject{
      */
     receiveDamage(mob)
     {
-        let def = this.defense/2<1?1:this.defense/2;
-        this.healthPoints-=mob.attack/def;
-        if(this.healthPoints<0)
+        if(this.canReceiveDamage)
         {
-            this.healthPoints = 0;
+            let def = this.defense/2<1?1:this.defense/2;
+            this.healthPoints-=mob.attack/def;
+            this.canReceiveDamage = false;
         }
+
     }
     /**
      * 
@@ -70,4 +107,5 @@ export default class Mob extends MobileGameObject{
     {
         mob.receiveDamage(this);
     }
+    die(){}
 }

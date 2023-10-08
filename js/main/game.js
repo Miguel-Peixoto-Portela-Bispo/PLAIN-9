@@ -71,6 +71,7 @@ export default class Game{
         if(!this.#scenes.get(this.curSceneId)) return;
         this.#scenes.get(this.curSceneId).preRender(this.#renderer);
         this.#scenes.get(this.curSceneId).render(this.#renderer);
+        this.#scenes.get(this.curSceneId).posRender(this.#renderer);
     }
     /**
      * 

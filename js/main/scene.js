@@ -55,6 +55,13 @@ export default class Scene{
         {
             this._objects[i].render(renderer);
         }
+    }
+    /**
+     * 
+     * @param {Renderer} renderer
+     */
+    posRender(renderer)
+    {
         renderer.render();
     }
     /**

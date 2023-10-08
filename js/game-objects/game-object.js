@@ -6,7 +6,7 @@ import StringMask from "../util/string-mask.js";
 import Vector from "../util/vector.js";
 
 export default class GameObject{
-    
+
     /**
      * 
      * @param {Scene} scene 
@@ -17,9 +17,9 @@ export default class GameObject{
     constructor(scene, x, y, text, color = new Color(255, 255, 255, 1), bgColor = new Color(0, 0, 0, 1))
     {
         this._scene = scene;
-        this.position = new Vector(x, y);
+        this._position = new Vector(x, y);
         this.text = text;
-        this.mask = new StringMask(x, y, text);
+        this._mask = new StringMask(x, y, text);
         this.color = color;
         this.bgColor = bgColor;
         this.depth = 0;
@@ -35,5 +35,18 @@ export default class GameObject{
         {
             renderer.drawString(this.text, this.color, this.bgColor, Math.round(this.position.x)-this._scene.camera.position.x, Math.round(this.position.y)-this._scene.camera.position.y);
         }
+    }
+    set position(value)
+    {
+        this._position = value;
+        this._mask.position = value;
+    }
+    get position()
+    {
+        return this._position;
+    }
+    get mask()
+    {
+        return this._mask;
     }
 }

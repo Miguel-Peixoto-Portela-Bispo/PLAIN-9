@@ -31,7 +31,7 @@ export default class StringMask{
 
         const points1 = StringMask.getPoints(this.text);
         const points2 = StringMask.getPoints(mask.text);
-
+        
         // checks if the points collided
         for(let i = 0;i<points1.length;i++)
 		{

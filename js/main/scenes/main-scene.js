@@ -5,6 +5,7 @@ import InputHandler from "../../inputs/input-handler.js";
 import Renderer from "../../graphics/renderer.js";
 import World from "../../world/world.js";
 import Enemy from "../../game-objects/enemy.js";
+import UI from "../../graphics/ui.js";
 
 export default class MainScene extends Scene{
 
@@ -21,7 +22,8 @@ export default class MainScene extends Scene{
         World.getSources("../../../assets/rooms.txt").then(v=>
         {
             this.world = new World(this, 5, 5, v);
-        })
+        });
+        this.UI = new UI(this.player);
     }
     /**
      * 
@@ -52,5 +54,6 @@ export default class MainScene extends Scene{
             this.world.render(renderer);
         }
         super.render(renderer);
+        this.UI.render(renderer);
     }
 }
