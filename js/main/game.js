@@ -160,6 +160,7 @@ export default class Game{
         window.onfocus = ()=>
         {
             this.#lastTime = performance.now();
+            this.#delta = 0;
         }
     }
     stop()
