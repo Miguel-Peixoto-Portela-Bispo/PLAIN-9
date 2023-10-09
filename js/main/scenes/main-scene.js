@@ -19,7 +19,7 @@ export default class MainScene extends Scene{
 
         this.player = new Player(this, 0, 0);
         this.addObject(this.player);
-        World.getSources("../../../assets/rooms").then(v=>
+        World.getSources("https://raw.githubusercontent.com/Miguel-Peixoto-Portela-Bispo/PLAIN-9/main/assets/rooms").then(v=>
         {
             this.world = new World(this, 5, 5, v);
         });
