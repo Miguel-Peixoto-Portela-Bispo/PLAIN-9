@@ -32,7 +32,7 @@ export default class Enemy extends Mob{
 
         let vel = player.position.add(StringMask.getStringCenter(player.text)).sub(this.position.add(StringMask.getStringCenter(this.text)));
 
-        if(vel.length()<=8)
+        if(vel.length()<=8&&!this._inRecoil)
         {
             vel = vel.mult(vel.length()>1?1/vel.length():1).mult(this.speed);
             this.move(vel, rooms);

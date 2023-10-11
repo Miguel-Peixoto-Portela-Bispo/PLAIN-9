@@ -51,6 +51,7 @@ export default class Player extends Mob{
         let mult = this.vel.length()>1?1/this.vel.length():1;
         this.vel = this.vel.mult(mult);
 
+        if(!this._inRecoil)
         this.move(this.vel, rooms);
 
         this.handleInvicibility();

@@ -33,6 +33,22 @@ export default class Mob extends MobileGameObject{
     {
         super.update();
         this.checkStatus();
+        this.handleDamagePossibility();
+        this.handleRecoil(rooms);
+    }
+    /**
+     * 
+     * @param {Renderer} renderer 
+     */
+    render(renderer)
+    {
+        if(this.canShow)
+        {
+            super.render(renderer);
+        }
+    }
+    handleDamagePossibility()
+    {
         if(!this.canReceiveDamage)
         {
             this.damageTimer++;
@@ -47,17 +63,21 @@ export default class Mob extends MobileGameObject{
                 this.canReceiveDamage = true;
             }
         }
-        
     }
     /**
      * 
-     * @param {Renderer} renderer 
+     * @param {Room[]} rooms 
      */
-    render(renderer)
+    handleRecoil(rooms)
     {
-        if(this.canShow)
+        if(this._inRecoil)
         {
-            super.render(renderer);
+            this.move(this.recoilVelocity, rooms);
+            this.recoilVelocity = this.recoilVelocity.mult(0.9);
+            if(Math.abs(this.recoilVelocity.x)<0.2&&Math.abs(this.recoilVelocity.y)<0.2)
+            {
+                this._inRecoil = false;
+            }
         }
     }
     /**
@@ -96,6 +116,9 @@ export default class Mob extends MobileGameObject{
             let def = this.defense/2<1?1:this.defense/2;
             this.healthPoints-=mob.attack/def;
             this.canReceiveDamage = false;
+            this._inRecoil = true;
+            let recoilAngle = Math.atan2(this.position.y-mob.position.y, this.position.x-mob.position.x);
+            this.recoilVelocity = new Vector(Math.cos(recoilAngle), Math.sin(recoilAngle));
         }
 
     }
