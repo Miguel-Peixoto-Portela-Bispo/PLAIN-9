@@ -108,8 +108,9 @@ export default class Mob extends MobileGameObject{
     /**
      * 
      * @param {Mob} mob 
+     * @param {number} angle 
      */
-    receiveDamage(mob)
+    receiveDamage(mob, angle)
     {
         if(this.canReceiveDamage)
         {
@@ -117,18 +118,18 @@ export default class Mob extends MobileGameObject{
             this.healthPoints-=mob.attack/def;
             this.canReceiveDamage = false;
             this._inRecoil = true;
-            let recoilAngle = Math.atan2(this.position.y-mob.position.y, this.position.x-mob.position.x);
-            this.recoilVelocity = new Vector(Math.cos(recoilAngle), Math.sin(recoilAngle));
+            this.recoilVelocity = new Vector(Math.cos(angle), Math.sin(angle));
         }
 
     }
     /**
      * 
      * @param {Mob} mob 
+     * @param {number} angle 
      */
-    giveDamage(mob)
+    giveDamage(mob, angle)
     {
-        mob.receiveDamage(this);
+        mob.receiveDamage(this, angle);
     }
     die(){}
 }

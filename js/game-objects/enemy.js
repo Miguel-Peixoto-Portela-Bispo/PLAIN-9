@@ -32,7 +32,7 @@ export default class Enemy extends Mob{
 
         let vel = player.position.add(StringMask.getStringCenter(player.text)).sub(this.position.add(StringMask.getStringCenter(this.text)));
 
-        if(vel.length()<=8&&!this._inRecoil)
+        if(vel.length()<=10&&!this._inRecoil)
         {
             vel = vel.mult(vel.length()>1?1/vel.length():1).mult(this.speed);
             this.move(vel, rooms);
@@ -48,8 +48,8 @@ export default class Enemy extends Mob{
 
         if(this.mask.intersectsString(player.mask))
         {
-            this.giveDamage(player);
-            this.receiveDamage(player);
+            this.giveDamage(player, 0);
+            this.receiveDamage(player, Math.atan2(this.position.y-player.position.y, this.position.x-player.position.x));
         }
     }
     die()

@@ -5,9 +5,11 @@
 import Renderer from "../graphics/renderer.js";
 import Scene from "./scene.js";
 import InputHandler from "../inputs/input-handler.js";
+import Vector from "../util/vector.js";
 
 export default class Game{
 
+    #nodeSize;
     #delta = 0;
     #scenes = new Map();
     #triggers = [];
@@ -32,11 +34,7 @@ export default class Game{
         this.#lastTime = 0;
         this.fps = 60;
         this.running = false;
-        this.#scenes.set("main", new Scene({
-            canvas: this.canvasElm,
-            inputs: this.#inputs
-        }));
-        this.curSceneId = "main";
+        this.#nodeSize = new Vector(this.#renderer.charSpacing, this.#renderer.lineHeight);
         this.#inputs.onInteract = ()=>
         {
             this.#startTime = performance.now();
@@ -48,7 +46,7 @@ export default class Game{
     {
         for(let i = 0;i<this.#triggers.length;i++)
         {
-            if(this.#scenes.get(this.#triggers[i].from) === this.#scenes.get(this.curSceneId))
+            if(this.#triggers[i].from === this.curSceneId)
             {
                 if(this.#triggers[i].condition())
                 {
@@ -114,18 +112,18 @@ export default class Game{
     }
     /**
      * 
-     * @param {Scene} from 
-     * @param {Scene} to 
+     * @param {string} from 
+     * @param {string} to 
      * @param {void} condition 
      * @param {void} callBack 
      */
     addChangeSceneTrigger(from, to, condition, callBack = ()=>{})
     {
         this.#triggers.push({
-            from: from,
-            to: to,
-            condition: condition,
-            callBack: callBack
+            from,
+            to,
+            condition,
+            callBack
         });
     }
     #loop = (timeStamp)=>
@@ -182,5 +180,8 @@ export default class Game{
     {
         return this.#HEIGHT;
     }
-
+    get nodeSize()
+    {
+        return new Vector(this.#nodeSize.x, this.#nodeSize.y);
+    }
 }

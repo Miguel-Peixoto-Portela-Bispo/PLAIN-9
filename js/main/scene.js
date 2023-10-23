@@ -96,7 +96,11 @@ export default class Scene{
     }
     get objects()
     {
-        return this._objects;
+        return [...this._objects];
     }
     start(){}
+    get game()
+    {
+        return this._game;
+    }
 }

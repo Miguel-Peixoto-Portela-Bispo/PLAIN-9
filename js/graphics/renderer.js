@@ -35,8 +35,8 @@ export default class Renderer{
         this.#width = width;
         this.#height = height;
         this.fontSize = 30;
-        this.lineHeight = this.fontSize*1.05;
-        this.charSpacing = this.fontSize/1.57;
+        this.lineHeight = this.fontSize*1.3;
+        this.charSpacing = this.fontSize/1.6;
 
         this.charNodes = new Array(width*height);
 

@@ -139,12 +139,13 @@ export default class Player extends Mob{
     /**
      * 
      * @param {Mob} mob 
+     * @param {number} angle
      */
-    receiveDamage(mob)
+    receiveDamage(mob, angle)
     {
         if(!this.invincible)
         {
-            super.receiveDamage(mob);
+            super.receiveDamage(mob, angle);
         }
     }
 }

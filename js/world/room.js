@@ -1,9 +1,11 @@
+import EndPoint from "../game-objects/end-point.js";
 import Enemy from "../game-objects/enemy.js";
 import Player from "../game-objects/player.js";
 import Color from "../graphics/color.js";
 import Renderer from "../graphics/renderer.js";
 import Game from "../main/game.js";
 import Scene from "../main/scene.js";
+import Vector from "../util/vector.js";
 import Tile from "./tile.js";
 
 export default class Room{
@@ -15,6 +17,8 @@ export default class Room{
 
     static #VOID_TILE = new Tile('.', false);
     static #WALL_TILE = new Tile('#', true, new Color(110, 110, 110, 1));
+
+    #endPointPosition
 
     #width;
     #height;
@@ -79,8 +83,6 @@ export default class Room{
             bottom = this.#height+this.offsetY/Tile.HEIGHT-1;
         }
 
-        // console.log(left, top)
-        // console.log(right, bottom)
         // rows
         for(let y = top;y<=bottom;y++)
         {
@@ -163,7 +165,7 @@ export default class Room{
                 if(x>=this.#width) continue;
                 const srcChar = rows[y].charAt(x);
 
-                if(srcChar === ' '||srcChar === '.'||srcChar === 'P')
+                if(srcChar === ' '||srcChar === '.'||srcChar === 'P'||srcChar === 'E')
                 {
                     this.#tiles[x+y*this.#width] = Room.#VOID_TILE_ID;
                 }
@@ -179,6 +181,12 @@ export default class Room{
                             o.position.y = y*Tile.HEIGHT+this.offsetY;
                         }
                     }
+                }
+                if(srcChar === 'E')
+                {
+                    console.log("a")
+                    this.#endPointPosition = new Vector(x*Tile.WIDTH+this.offsetX,
+                        y*Tile.HEIGHT+this.offsetY);
                 }
                 if(Math.random()<opts.enemyRate&&!this.getTile(Math.floor(x+this.offsetX/Tile.WIDTH), Math.floor(y+this.offsetY/Tile.HEIGHT)).isSolid)
                 {
@@ -220,5 +228,10 @@ export default class Room{
     static get HEIGHT()
     {
         return Room.#HEIGHT;
+    }
+    addEndPoint()
+    {
+        const endPoint = new EndPoint(this.#scene, this.#endPointPosition.x, this.#endPointPosition.y);
+        this.#scene.addObject(endPoint);
     }
 }

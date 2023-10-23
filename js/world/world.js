@@ -99,6 +99,7 @@ export default class World{
 
         for(let i = 0;i<this.#rooms.length;i++)
         {
+            // choose next step
             if(Math.random()<0.5&&yy>0)
             {
                 yy--;
@@ -128,6 +129,11 @@ export default class World{
                     canSetPlayerPosition: false,
                     enemyRate: Math.random()*0.2
                 });
+            }
+            if(i>=this.#rooms.length-1)
+            {
+                console.log(this.#rooms[index])
+                this.#rooms[index].addEndPoint();
             }
 
             // open space on the left side if needed
